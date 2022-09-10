@@ -2,12 +2,16 @@ import { Controller } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 import { HelloService } from './hello.service';
 import { Hello } from 'shared/lib/transfer/hello.dto';
+import {
+  HelloServiceController,
+  HelloServiceControllerMethods,
+} from 'shared/lib/generated/hello';
 
 @Controller()
-export class HelloController {
+@HelloServiceControllerMethods()
+export class HelloController implements HelloServiceController {
   constructor(private readonly helloService: HelloService) {}
 
-  @GrpcMethod('HelloService', 'getHello')
   getHello(): Hello {
     return { message: this.helloService.getHello() };
   }
